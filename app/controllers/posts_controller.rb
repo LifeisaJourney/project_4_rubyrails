@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :authenticate_user,  only: [:index,:edit, :update, :create, :destroy ]
+  before_action :authenticate_user,  only: [:edit, :update, :create, :destroy ]
   before_action :set_post, only: [:show, :edit, :update, :destroy]
 
   # GET /posts
@@ -27,17 +27,25 @@ class PostsController < ApplicationController
   # POST /posts
   # POST /posts.json
   def create
-    @post = Post.new(post_params)
+    # p '%%%%%%%%%%%%%%%%%%%%%%%%%%'
+    # p params[:post][:title]
+    # p '%%%%%%%%%%%%%%%%%%%%%%%%%%'
 
-    respond_to do |format|
-      if @post.save
-        format.html { redirect_to @post, notice: 'Post was successfully created.' }
-        format.json { render :show, status: :created, location: @post }
-      else
-        format.html { render :new }
-        format.json { render json: @post.errors, status: :unprocessable_entity }
-      end
+
+    @post = Post.new({title: params[:post][:title], post: params[:post][:post]})
+    @post[:user_id] = current_user.id
+
+
+    p '%%%%%%%%%%%%%%%%%%%%%%%%%%'
+    p @post
+    p '%%%%%%%%%%%%%%%%%%%%%%%%%%'
+   
+    if @post.save!
+      render json: @post
+    else
+      render json: @post.errors, status: :unprocessable_entity
     end
+
   end
 
   # PATCH/PUT /posts/1
@@ -75,7 +83,5 @@ class PostsController < ApplicationController
       params.fetch(:post, {})
     end
 
-    def authorize
-      return_unauthorized unless current_user 
-    end
+  
 end

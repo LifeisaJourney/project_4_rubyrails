@@ -1,76 +1,55 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
-
-  # GET /users
-  # GET /users.json
+  # Use Knock to make sure the current_user is authenticated before completing request.
+  before_action :authenticate_user,  only: [:index, :current, :update]
+  before_action :authorize_as_admin, only: [:destroy]
+  before_action :authorize,          only: [:update]
+  
+  # Should work if the current_user is authenticated.
   def index
-    @users = User.all
-    render json: {users: @users}
+    render json: {status: 200, msg: 'Logged-in'}
   end
 
-  # GET /users/1
-  # GET /users/1.json
-  def show
-  end
-
-  # GET /users/new
-  def new
-    @user = User.new
-    render json: {users: @user}
-  end
-
-  # GET /users/1/edit
-  def edit
-  end
-
-  # POST /users
-  # POST /users.json
+  # Method to create a new user using the safe params we setup.
   def create
-    @user = User.new(user_params)
-
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
-        format.json { render :show, status: :created, location: @user }
-      else
-        format.html { render :new }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
+    user = User.new(user_params)
+    if user.save
+      render json: {status: 200, msg: 'User was created.'}
     end
   end
 
-  # PATCH/PUT /users/1
-  # PATCH/PUT /users/1.json
+  # Method to update a specific user. User will need to be authorized.
   def update
-    respond_to do |format|
-      if @user.update(user_params)
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
-        format.json { render :show, status: :ok, location: @user }
-      else
-        format.html { render :edit }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
+    user = User.find(params[:id])
+    if user.update(user_params)
+      render json: { status: 200, msg: 'User details have been updated.' }
     end
   end
 
-  # DELETE /users/1
-  # DELETE /users/1.json
+  # Method to delete a user, this method is only for admin accounts.
   def destroy
-    @user.destroy
-    respond_to do |format|
-      format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
-      format.json { head :no_content }
+    user = User.find(params[:id])
+    if user.destroy
+      render json: { status: 200, msg: 'User has been deleted.' }
     end
   end
 
+  # Call this method to check if the user is logged-in.
+  # If the user is logged-in we will return the user's information.
+  def current
+    current_user.update!(last_login: Time.now)
+    render json: current_user
+  end
+  
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_user
-      @user = User.find(params[:id])
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def user_params
-      params.fetch(:user, {})
-    end
+  
+  # Setting up strict parameters for when we add account creation.
+  def user_params
+    params.require(:user).permit(:username, :email, :password, :password_confirmation)
+  end
+  
+  # Adding a method to check if current_user can update itself. 
+  # This uses our UserModel method.
+  def authorize
+    return_unauthorized unless current_user && current_user.can_modify_user?(params[:id])
+  end
 end

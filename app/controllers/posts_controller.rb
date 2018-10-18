@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :authenticate_user,  only: [:edit, :update, :create, :destroy]
+  before_action :authenticate_user,  only: [:index,:edit, :update, :create, :destroy ]
   before_action :set_post, only: [:show, :edit, :update, :destroy]
 
   # GET /posts
@@ -73,5 +73,9 @@ class PostsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
       params.fetch(:post, {})
+    end
+
+    def authorize
+      return_unauthorized unless current_user 
     end
 end

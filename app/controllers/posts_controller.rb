@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :authenticate_user,  only: [:edit, :update, :create, :destroy ]
+  # before_action :authenticate_user,  only: [:edit, :update, :create, :destroy ]
   before_action :set_post, only: [:show, :edit, :update, :destroy]
 
   # GET /posts
@@ -28,7 +28,7 @@ class PostsController < ApplicationController
     @post= Post.create(
       title: params[:post][:title], 
       post: params[:post][:post], 
-      user_id: current_user.id
+      user_id: 1
     )
 
     if @post

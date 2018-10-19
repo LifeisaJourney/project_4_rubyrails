@@ -3,7 +3,7 @@ class ApplicationController < ActionController::API
     # protect_from_forgery with: :null_session
     
     # Include Knock within your application.
-  include Knock::Authenticable
+  # include Knock::Authenticable
   
   protected
   

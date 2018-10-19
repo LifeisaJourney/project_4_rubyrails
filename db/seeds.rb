@@ -7,13 +7,6 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 
-user1 = User.create!({username:"heinekenhamilton", email: "heineken@gmail.com", password_digest:"$2a$10$Wf3CxWf4vqwcasjGKn37hORLM3oLvkn3lVK1B92NUnrQ2TknRRP0e" })
-user2 = User.create!({username:"tamlikescats", email: "tam@gmail.com", password_digest:"$2a$10$JPtiQhGjIjO/EhCp6/cxPO2N7Zy0cGa1u0GRKA1fqA5pVEclEVxOe"})
-user3 = User.create!({username:"bobthecarnivore", email:"bobthemeateater@gmail.com", password_digest:"$2a$10$q5E3Vf/T91fjIj/OBKq4yeGfM9Pmt8uUjrvFicVKX10ATauDplriO"})
-user4 = User.create!({username:"alpacalover", email: "alpacas@gmail.com", password_digest:"$2a$10$FmVb7pvtejWe.VbbH.KdcuVXhuzfnm7Z.nI.vLUq4gDq05svjUJ0a"})
-user5 = User.create!({username:"biggeorge", email: "monkeygeorge@gmail.com", password_digest: "$2a$10$Qs2h8H/YGVO9.o1jUbRjPeXfT/Apx6qIjsiVbLv.k/de7NhMe.1v6"})
-user6 = User.create!({username:"smollanimol", email: "smoll@gmail.com", password_digest: "$2a$10$GBU2/nCq74qhXnBkXETWeeZWtcuCrl5my5s7DcCuZAS1CLUJ1X/1W"})
-user7 = User.create!({username:"adorablejoseph", email: "saintjoseph@gmail.com", password_digest: "$2a$10$lWdtiEF3hkv8f/bFP.kVo.ITsw5CzGyJmljcHYTRGZLp5WKdtmI02"})
 
 
 post1 = Post.create!({title: "Alpacas", post: "Alpaca Petting Zoo this weekend in NYC!", :user_id => user1.id})

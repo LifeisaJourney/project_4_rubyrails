@@ -11,7 +11,7 @@ class UsersController < ApplicationController
 
   # Method to create a new user using the safe params we setup.
   def create
-    p &&&&&&&&&&&
+    
     p user_params
     user = User.new(user_params)
     

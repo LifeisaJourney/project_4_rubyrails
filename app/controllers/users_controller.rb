@@ -15,9 +15,9 @@ class UsersController < ApplicationController
     p user_params
     @user = User.new(user_params)
     
-    @user.save
+    if @user.save!  
       render json: {status: 200, msg: 'User was created.'}
-    
+    end
   end
 
   # Method to update a specific user. User will need to be authorized.

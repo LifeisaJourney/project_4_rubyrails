@@ -14,6 +14,9 @@ get    'auth'            => 'home#auth'
 post   'user_token'      => 'user_token#create'
 
 # User actions
+# get    '/posts/new'         => 'posts#new'
+# post  '/posts/new'        =>   'posts#create'
+
 get    '/api/users'          => 'users#index'
 get    '/api/users/current'  => 'users#current'
 post   '/api/users/create'   => 'users#create'

@@ -26,8 +26,8 @@ class PostsController < ApplicationController
   # POST /posts.json
   def create
     @post= Post.create(
-      title: params[:post][:title], 
       post: params[:post][:post], 
+      title: params[:post][:title], 
       user_id: 1
     )
 
